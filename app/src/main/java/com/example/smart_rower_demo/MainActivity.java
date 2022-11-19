@@ -114,13 +114,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 User user;
                 try {
-                    user = new User(-1,et_username.getText().toString(),et_password.getText().toString(),FTP, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7); // Fill in class constructor
+                    user = new User(et_username.getText().toString(),et_password.getText().toString(),FTP, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7); // Fill in class constructor
                     //Toast.makeText(MainActivity.this, user.toString(), Toast.LENGTH_SHORT).show(); //Testing
                 }
 
                 catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Error Creating Account", Toast.LENGTH_SHORT).show();
-                    user = new User(-1,"error", "error",FTP, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7);
+                    user = new User("error", "error",FTP, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7);
                 }
 
                 //add User information in table "User_Info"
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Testing User class
-                User user = new User(-1,et_username.getText().toString(),et_password.getText().toString(),FTP, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7); // Fill in class constructor
+                User user = new User(et_username.getText().toString(),et_password.getText().toString(),FTP, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7); // Fill in class constructor
                 Toast.makeText(MainActivity.this, user.toString(), Toast.LENGTH_SHORT).show();
 
 
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //Testing dataframe35
-                dataframe35 realdata2 = new dataframe35(-1,time_35, dist, drive_len, drive_time, stroke_rec_time, stroke_dist, peak_drive_force, avg_drive_force, work_per_stroke, stroke_count);
+                dataframe35 realdata2 = new dataframe35(time_35, dist, drive_len, drive_time, stroke_rec_time, stroke_dist, peak_drive_force, avg_drive_force, work_per_stroke, stroke_count);
                 Toast.makeText(MainActivity.this, realdata2.toString(), Toast.LENGTH_SHORT).show(); //Testing
                 boolean success2 = databaseHelper.add_dataframe35(realdata2);
                 if (success2 == true){

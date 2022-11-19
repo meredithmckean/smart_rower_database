@@ -1,7 +1,6 @@
 package com.example.smart_rower_demo;
 
 public class dataframe35 {
-    private int ID;
     double time_35;
     double dist;
     double drive_len;
@@ -13,8 +12,7 @@ public class dataframe35 {
     double work_per_stroke;
     int stroke_count;
 
-    public dataframe35(int ID, double time_35, double dist, double drive_len, double drive_time, double stroke_rec_time, double stroke_dist, double peak_drive_force, double avg_drive_force, double work_per_stroke, int stroke_count) {
-        this.ID = ID;
+    public dataframe35(double time_35, double dist, double drive_len, double drive_time, double stroke_rec_time, double stroke_dist, double peak_drive_force, double avg_drive_force, double work_per_stroke, int stroke_count) {
         this.time_35 = time_35;
         this.dist = dist;
         this.drive_len = drive_len;
@@ -33,8 +31,7 @@ public class dataframe35 {
     @Override
     public String toString() {
         return "dataframe35{" +
-                "ID=" + ID +
-                ", time_35=" + time_35 +
+                "time_35=" + time_35 +
                 ", dist=" + dist +
                 ", drive_len=" + drive_len +
                 ", drive_time=" + drive_time +
@@ -47,13 +44,6 @@ public class dataframe35 {
                 '}';
     }
 
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
 
     public double getTime_35() {
         return time_35;

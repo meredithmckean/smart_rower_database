@@ -1,7 +1,6 @@
 package com.example.smart_rower_demo;
 
 public class User {
-    private int ID;
     private String Username;
     private String Password;
     private int FTP;
@@ -13,8 +12,7 @@ public class User {
     int pz_6;
     int pz_7;
 
-    public User(int ID, String username, String password, int FTP, int pz_1, int pz_2, int pz_3, int pz_4, int pz_5, int pz_6, int pz_7) {
-        this.ID = ID;
+    public User(String username, String password, int FTP, int pz_1, int pz_2, int pz_3, int pz_4, int pz_5, int pz_6, int pz_7) {
         Username = username;
         Password = password;
         this.FTP = FTP;
@@ -35,8 +33,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "ID=" + ID +
-                ", Username='" + Username + '\'' +
+                "Username='" + Username + '\'' +
                 ", Password='" + Password + '\'' +
                 ", FTP=" + FTP +
                 ", pz_1=" + pz_1 +
@@ -51,14 +48,6 @@ public class User {
 
 
     //Getters and Setters
-
-    public int getID() {
-        return ID;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
-    }
 
     public String getUsername() {
         return Username;
