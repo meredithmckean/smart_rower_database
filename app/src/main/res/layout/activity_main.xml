@@ -99,5 +99,14 @@
         android:layout_below="@id/btnUpdatePassword"
         android:text="Update FTP"/>
 
+    <Button
+        android:id="@+id/btnDeleteTables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/btnUpdateFTP"
+        android:text="Delete Tables"/>
+
 
 </RelativeLayout>

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     // references of buttons and other controls on the layout
     EditText et_username, et_password;
-    Button btn_login, btn_create_account, btn_delete_account, btn_user_info, btn_class_testing, btn_update_password, btn_update_FTP;
+    Button btn_login, btn_create_account, btn_delete_account, btn_user_info, btn_class_testing, btn_update_password, btn_update_FTP, btn_delete_tables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { //starts the application
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         btn_class_testing = findViewById(R.id.btnClassTesting);
         btn_update_password = findViewById(R.id.btnUpdatePassword);
         btn_update_FTP = findViewById(R.id.btnUpdateFTP);
+        btn_delete_tables = findViewById(R.id.btnDeleteTables);
 
 
         //Test Data
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //add User information in table "User_Info"
                 DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this); //making reference to database
-                boolean success = databaseHelper.addOne(user);
+                boolean success = databaseHelper.add_account(user);
 
                 if (success == true) {
                     Toast.makeText(MainActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 int FTP = db.getFTP(usernameTXT);
                 Toast.makeText(MainActivity.this, "FTP: " + FTP, Toast.LENGTH_SHORT).show();
 
+                //testing user_info table go getters
                 int pz1 = db.getPZ_1(usernameTXT);
                 int pz2 = db.getPZ_2(usernameTXT);
                 int pz3 = db.getPZ_3(usernameTXT);
@@ -170,6 +172,27 @@ public class MainActivity extends AppCompatActivity {
                 int pz7 = db.getPZ_7(usernameTXT);
                 Toast.makeText(MainActivity.this, "pz: " + pz1 +' '+pz2 +' '+pz3 +' '+pz4 +' '+pz5 +' '+pz6 +' '+pz7, Toast.LENGTH_SHORT).show();
 
+                //testing dataframe33_info table go getters
+                int interval = db.getInterval(1.0);
+                int power = db.getPower(1.0);
+                int total_cal = db.getTotal_cal(1.0);
+                int split_pace = db.getSplit_pace(1.0);
+                int split_power = db.getSplit_power(1.0);
+                int split_cal = db.getSplit_cal(1.0);
+                int last_split_time = db.getLast_split_time(1.0);
+                int last_split_dist = db.getLast_split_dist(1.0);
+                Toast.makeText(MainActivity.this, "dataframe33: " + interval +' '+ power +' '+ total_cal +' '+ split_pace +' '+ split_power +' '+ split_cal +' '+ last_split_time+' '+ last_split_dist, Toast.LENGTH_SHORT).show();
+
+                //testing dataframe35_info table go getters
+                double dist = db.getDist(10.0);
+                double drive_len = db.getDrive_len(10.0);
+                double drive_time = db.getDrive_time(10.0);
+                double stroke_dist = db.getStroke_dist(10.0);
+                double peak_drive_force = db.getPeak_drive_force(10.0);
+                double avg_drive_force = db.getAvg_drive_force(10.0);
+                double work_per_stroke = db.getWork_per_stroke(10.0);
+                double stroke_count = db.getStroke_count(10.0);
+                Toast.makeText(MainActivity.this, "dataframe35: " + dist +' '+ drive_len +' '+ drive_time +' '+ stroke_dist +' '+ peak_drive_force +' '+ avg_drive_force +' '+ work_per_stroke +' '+ stroke_count, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -181,12 +204,32 @@ public class MainActivity extends AppCompatActivity {
                 User user = new User(-1,et_username.getText().toString(),et_password.getText().toString(),FTP, pz_1, pz_2, pz_3, pz_4, pz_5, pz_6, pz_7); // Fill in class constructor
                 Toast.makeText(MainActivity.this, user.toString(), Toast.LENGTH_SHORT).show();
 
+
                 //Testing Real Time data classes
+                DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.this); //making reference to database
+
+                //Testing dataframe33
                 dataframe33 realdata1 = new dataframe33(time_33, interval, power, total_cal, split_pace, split_power, split_cal,last_split_time, last_split_dist);
                 Toast.makeText(MainActivity.this, realdata1.toString(), Toast.LENGTH_SHORT).show(); //Testing
+                boolean success1 = databaseHelper.add_dataframe33(realdata1);
+                if (success1 == true){
+                    Toast.makeText(MainActivity.this, "Successfully entered table", Toast.LENGTH_SHORT).show(); //Testing
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Did not enter table", Toast.LENGTH_SHORT).show(); //Testing
+                }
 
-                dataframe35 realdata2 = new dataframe35(time_35, dist, drive_len, drive_time, stroke_rec_time, stroke_dist, peak_drive_force, avg_drive_force, work_per_stroke, stroke_count);
+
+                //Testing dataframe35
+                dataframe35 realdata2 = new dataframe35(-1,time_35, dist, drive_len, drive_time, stroke_rec_time, stroke_dist, peak_drive_force, avg_drive_force, work_per_stroke, stroke_count);
                 Toast.makeText(MainActivity.this, realdata2.toString(), Toast.LENGTH_SHORT).show(); //Testing
+                boolean success2 = databaseHelper.add_dataframe35(realdata2);
+                if (success2 == true){
+                    Toast.makeText(MainActivity.this, "Successfully entered table", Toast.LENGTH_SHORT).show(); //Testing
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Did not enter table", Toast.LENGTH_SHORT).show(); //Testing
+                }
 
             }
         });
@@ -224,6 +267,19 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     Toast.makeText(MainActivity.this, "FTP is not Updated", Toast.LENGTH_SHORT).show();
                 }
+
+            }
+        });
+
+
+        btn_delete_tables.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this); //making reference to database
+                boolean success1 = db.delete_dataframe33_table();
+                Toast.makeText(MainActivity.this, "dataframe33 table Deleted", Toast.LENGTH_SHORT).show();
+                boolean success2 = db.delete_dataframe35_table();
+                Toast.makeText(MainActivity.this, "dataframe35 table Deleted", Toast.LENGTH_SHORT).show();
 
             }
         });
