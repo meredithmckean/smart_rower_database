@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     // references of buttons and other controls on the layout
     EditText et_username, et_password;
-    Button btn_login, btn_create_account, btn_delete_account, btn_user_info, btn_class_testing, btn_update_password, btn_update_FTP, btn_delete_tables;
+    Button btn_login, btn_create_account, btn_delete_account, btn_user_info, btn_class_testing, btn_update_password, btn_update_FTP, btn_delete_tables, btn_history_error_tables, btn_view_history_error_tables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { //starts the application
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         btn_update_password = findViewById(R.id.btnUpdatePassword);
         btn_update_FTP = findViewById(R.id.btnUpdateFTP);
         btn_delete_tables = findViewById(R.id.btnDeleteTables);
+        btn_history_error_tables = findViewById(R.id.btnHistoryErrorTables);
+        btn_view_history_error_tables = findViewById(R.id.btnViewHistoryErrorTables);
 
 
         //Test Data
@@ -103,9 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(MainActivity.this, "Username not in System", Toast.LENGTH_SHORT).show();
                 }
-
-
-
             }
         });
 
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_user_info.setOnClickListener(new View.OnClickListener() {
+        btn_user_info.setOnClickListener(new View.OnClickListener() {  //Display Information
             @Override
             public void onClick(View view) {
                 DatabaseHelper db = new DatabaseHelper(MainActivity.this); //making reference to database
@@ -284,6 +284,78 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btn_history_error_tables.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this); //making reference to database
+                String usernameTXT = et_username.getText().toString();
+                String passwordTXT = et_password.getText().toString();
+
+                //Testing adding to history table
+                boolean success1 = db.add_history(usernameTXT,"workout1");
+                if (success1 == true){
+                    Toast.makeText(MainActivity.this, "workout added to history table", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "workout not added to history table", Toast.LENGTH_SHORT).show();
+                }
+
+
+                //Testing adding to error table
+                int error = 5;
+                boolean success2 = db.add_error(usernameTXT,error);
+                if (success2 == true){
+                    Toast.makeText(MainActivity.this, "error added to history table", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "error not added to history table", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btn_view_history_error_tables.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this); //making reference to database
+                String usernameTXT = et_username.getText().toString();
+                String passwordTXT = et_password.getText().toString();
+
+                //display history table user specific
+                Cursor res = db.get_history(usernameTXT);
+                if(res.getCount() == 0) {
+                    Toast.makeText(MainActivity.this,"No History Exists", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                StringBuffer buffer = new StringBuffer();
+                while(res.moveToNext()) {
+                    //buffer.append("timestamp :"+res.getString(2)+"\n");
+                    //buffer.append("Workout :"+res.getString(3)+"\n");
+                    buffer.append(res.getString(2)+ "    "+"Workout :"+res.getString(3)+"\n");
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle(usernameTXT+" Workouts");
+                builder.setMessage(buffer.toString());
+                builder.show();
+
+
+                //display history table user specific
+                Cursor res2 = db.get_error(usernameTXT);
+                if(res2.getCount() == 0) {
+                    Toast.makeText(MainActivity.this,"No Error Exists", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                StringBuffer buffer2 = new StringBuffer();
+                while(res2.moveToNext()) {
+                    buffer2.append(res2.getString(2)+"   "+"Errors: "+res2.getString(3)+"\n");
+                }
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(MainActivity.this);
+                builder2.setCancelable(true);
+                builder2.setTitle(usernameTXT+" Errors");
+                builder2.setMessage(buffer2.toString());
+                builder2.show();
+            }
+        });
 
 
 

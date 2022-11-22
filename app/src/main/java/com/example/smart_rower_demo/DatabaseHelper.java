@@ -10,6 +10,9 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String USER_INFO = "user_info";
@@ -49,10 +52,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_WORK_PER_STROKE = "COLUMN_WORK_PER_STROKE";
     public static final String COLUMN_STROKE_COUNT = "COLUMN_STROKE_COUNT";
 
+    public static final String HISTORY_INFO = "history_info";
+    public static final String COLUMN_USER = "COLUMN_USER";
+    public static final String COLUMN_TIMESTAMP = "COLUMN_TIMESTAMP";
+    public static final String COLUMN_WORKOUT = "COLUMN_WORKOUT";
+
+    public static final String ERROR_INFO = "error_info";
+    public static final String COLUMN_ERROR = "COLUMN_ERROR";
+
+
 
     //Constructor
     public DatabaseHelper(@Nullable Context context) {
-        super(context, "Smart_Rower_Tables.db", null, 7); //Everytime you change the
+        super(context, "Smart_Rower_Tables.db", null, 11); //Everytime you change the
     }
     //methods that must be implemented
 
@@ -65,10 +77,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String dataframe35_table = "Create TABLE " + DATAFRAME35_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TIME_35 + " DOUB, " + COLUMN_DIST + " DOUB, " + COLUMN_DRIVE_LEN + " DOUB, " + COLUMN_DRIVE_TIME + " DOUB, " + COLUMN_STROKE_REC_TIME + " DOUB, " + COLUMN_STROKE_DIST + " DOUB, " + COLUMN_PEAK_DRIVE_FORCE + " DOUB, " + COLUMN_AVG_DRIVE_FORCE + " DOUB, " + COLUMN_WORK_PER_STROKE + " DOUB, " + COLUMN_STROKE_COUNT + " INT)";
 
+        String history_table = "Create TABLE " + HISTORY_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_WORKOUT + " TEXT)";
+
+        String error_table = "Create TABLE " + ERROR_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_ERROR + " INT)";
 
         db.execSQL(user_table);
         db.execSQL(dataframe33_table);
         db.execSQL(dataframe35_table);
+        db.execSQL(history_table);
+        db.execSQL(error_table);
     }
 
     //this is called if the database version number changes. It prevents users apps from breaking when you change the database design.
@@ -77,6 +94,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("Drop Table IF EXISTS USER_INFO");
         db.execSQL("Drop Table IF EXISTS DATAFRAME33_INFO");
         db.execSQL("Drop Table IF EXISTS DATAFRAME35_INFO");
+        db.execSQL("Drop Table IF EXISTS HISTORY_INFO");
+        db.execSQL("Drop Table IF EXISTS ERROR_INFO");
         onCreate(db);
     }
 
@@ -154,7 +173,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
 
+    public boolean add_history(String User, String workout) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_USER, User);
+        cv.put(COLUMN_WORKOUT, workout);
+
+        //ID is a auto increment in the database
+        long insert = db.insert(HISTORY_INFO, null, cv);
+        if (insert == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean add_error(String User, int error) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_USER, User);
+        cv.put(COLUMN_ERROR, error);
+
+        //ID is a auto increment in the database
+        long insert = db.insert(ERROR_INFO, null, cv);
+        if (insert == -1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 
@@ -164,19 +212,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Boolean delete_account(String username, String password) //Username and password entered
     {
         SQLiteDatabase DB = this.getWritableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from user_info where COLUMN_USER_NAME = ?", new String[]{username});//Find the data
+        Cursor cursor1 = DB.rawQuery("Select * from user_info where COLUMN_USER_NAME = ?", new String[]{username});//Find the data
+        Cursor cursor2 = DB.rawQuery("Select * from history_info where COLUMN_USER = ?", new String[]{username});//Find the data
+        Cursor cursor3 = DB.rawQuery("Select * from error_info where COLUMN_USER = ?", new String[]{username});//Find the data
 
+        //password match
         String correct_password = null;
-        while (cursor.moveToNext()) {
-            int index = cursor.getColumnIndex(COLUMN_PASSWORD);
-            correct_password = cursor.getString(index);
+        while (cursor1.moveToNext()) {
+            int index = cursor1.getColumnIndex(COLUMN_PASSWORD);
+            correct_password = cursor1.getString(index);
         }
         boolean password_match = password.equals(correct_password);
 
 
-        if (cursor.getCount() > 0 & password_match) {
-            long result = DB.delete(USER_INFO, "COLUMN_USER_NAME=?", new String[]{username});
-            if (result == -1) {
+        if (cursor1.getCount() > 0 & password_match) {
+            //delete account from user table
+            long result1 = DB.delete(USER_INFO, "COLUMN_USER_NAME=?", new String[]{username});
+            long result2 = DB.delete(HISTORY_INFO, "COLUMN_USER=?", new String[]{username});
+            long result3 = DB.delete(ERROR_INFO, "COLUMN_USER=?", new String[]{username});
+            if (result1 == -1) {
                 return false;
             } else {
                 return true;
@@ -253,6 +307,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return false;
         }
+    }
+
+    public Cursor get_history(String username) {  //display history table user specific
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from history_info where COLUMN_USER = ?", new String[]{username});//Find the data
+        return cursor;
+    }
+
+    public Cursor get_error(String username) {  //display history table user specific
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from error_info where COLUMN_USER = ?", new String[]{username});//Find the data
+        return cursor;
     }
 
     //Go getters for User

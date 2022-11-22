@@ -40,8 +40,8 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="30dp"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/password"
         android:text="Log In"/>
 
@@ -49,8 +49,8 @@
         android:id="@+id/btnCreateAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/btnLogin"
         android:text="Create Account"/>
 
@@ -58,26 +58,35 @@
         android:id="@+id/btnDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/btnCreateAccount"
         android:text="Delete Account"/>
+
+    <Button
+        android:id="@+id/btnUpdateFTP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnUpdatePassword"
+        android:text="Update FTP"/>
 
     <Button
         android:id="@+id/btnUserInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/btnDelete"
-        android:text="Display User Information"/>
+        android:text="Testing Go Getters"/>
 
     <Button
         android:id="@+id/btnClassTesting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/btnUserInfo"
         android:text="Class Testing"/>
 
@@ -85,28 +94,39 @@
         android:id="@+id/btnUpdatePassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/btnClassTesting"
         android:text="Update Password"/>
 
-    <Button
-        android:id="@+id/btnUpdateFTP"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/btnUpdatePassword"
-        android:text="Update FTP"/>
+
 
     <Button
         android:id="@+id/btnDeleteTables"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24dp"
-        android:layout_marginTop="10dp"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/btnUpdateFTP"
-        android:text="Delete Tables"/>
+        android:text="Delete Real Time Tables"/>
+
+    <Button
+        android:id="@+id/btnHistoryErrorTables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnDeleteTables"
+        android:text="Insert Hist/Error Tables"/>
+
+    <Button
+        android:id="@+id/btnViewHistoryErrorTables"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/btnHistoryErrorTables"
+        android:text="View Hist/Error Tables"/>
 
 
 </RelativeLayout>
