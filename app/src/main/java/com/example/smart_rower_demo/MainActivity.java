@@ -324,6 +324,7 @@ public class MainActivity extends AppCompatActivity {
                 Cursor res = db.get_history(usernameTXT);
                 if(res.getCount() == 0) {
                     Toast.makeText(MainActivity.this,"No History Exists", Toast.LENGTH_SHORT).show();
+                    res.close();
                     return;
                 }
                 StringBuffer buffer = new StringBuffer();
@@ -337,12 +338,14 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle(usernameTXT+" Workouts");
                 builder.setMessage(buffer.toString());
                 builder.show();
+                res.close();
 
 
                 //display history table user specific
                 Cursor res2 = db.get_error(usernameTXT);
                 if(res2.getCount() == 0) {
                     Toast.makeText(MainActivity.this,"No Error Exists", Toast.LENGTH_SHORT).show();
+                    res2.close();
                     return;
                 }
                 StringBuffer buffer2 = new StringBuffer();
@@ -354,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
                 builder2.setTitle(usernameTXT+" Errors");
                 builder2.setMessage(buffer2.toString());
                 builder2.show();
+                res2.close();
             }
         });
 

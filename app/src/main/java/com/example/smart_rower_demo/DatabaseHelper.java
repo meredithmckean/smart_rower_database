@@ -1,17 +1,17 @@
 package com.example.smart_rower_demo;
 
-import android.annotation.SuppressLint;
+//import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+//import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -108,6 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //If username exists return false
         Cursor cursor = db.rawQuery("Select * from user_info where COLUMN_USER_NAME = ?", new String[]{user.getUsername()});  //Find user in user_table
         if (cursor.getCount() > 0) {
+            cursor.close();
             return false;
         } else {
             ContentValues cv = new ContentValues();
@@ -123,12 +124,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cv.put(COLUMN_PZ_7, user.getPz_7());
             //ID is a auto increment in the database
             long insert = db.insert(USER_INFO, null, cv);
-            if (insert == -1) {
-                return false;
-            } else {
-                return true;
-            }
+            cursor.close();
+            return insert != -1;
         }
+
     }
 
     public boolean add_dataframe33(dataframe33 dataframe33) {
@@ -146,11 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //ID is a auto increment in the database
         long insert = db.insert(DATAFRAME33_INFO, null, cv);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return insert != -1;
     }
 
     public boolean add_dataframe35(dataframe35 dataframe35) {
@@ -168,11 +163,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_STROKE_COUNT, dataframe35.getStroke_count());
         //ID is a auto increment in the database
         long insert = db.insert(DATAFRAME35_INFO, null, cv);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return insert != -1;
     }
 
     public boolean add_history(String User, String workout) {
@@ -183,11 +174,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //ID is a auto increment in the database
         long insert = db.insert(HISTORY_INFO, null, cv);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return insert != -1;
     }
 
     public boolean add_error(String User, int error) {
@@ -198,11 +185,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //ID is a auto increment in the database
         long insert = db.insert(ERROR_INFO, null, cv);
-        if (insert == -1) {
-            return false;
-        } else {
-            return true;
-        }
+        return insert != -1;
     }
 
 
@@ -213,8 +196,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase DB = this.getWritableDatabase();
         Cursor cursor1 = DB.rawQuery("Select * from user_info where COLUMN_USER_NAME = ?", new String[]{username});//Find the data
-        Cursor cursor2 = DB.rawQuery("Select * from history_info where COLUMN_USER = ?", new String[]{username});//Find the data
-        Cursor cursor3 = DB.rawQuery("Select * from error_info where COLUMN_USER = ?", new String[]{username});//Find the data
 
         //password match
         String correct_password = null;
@@ -226,16 +207,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         if (cursor1.getCount() > 0 & password_match) {
-            //delete account from user table
+            //delete account from all tables
             long result1 = DB.delete(USER_INFO, "COLUMN_USER_NAME=?", new String[]{username});
             long result2 = DB.delete(HISTORY_INFO, "COLUMN_USER=?", new String[]{username});
             long result3 = DB.delete(ERROR_INFO, "COLUMN_USER=?", new String[]{username});
-            if (result1 == -1) {
+            cursor1.close();
+            if (result1 == -1 || result2 == -1 || result3 == -1 ) {
                 return false;
             } else {
                 return true;
             }
         } else {
+            cursor1.close();
             return false;
         }
     }
@@ -269,12 +252,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = DB.rawQuery("Select * from user_info where COLUMN_USER_NAME = ?", new String[]{username}); // find in table
         if (cursor.getCount() > 0) {
             long result = DB.update(USER_INFO, cv, "COLUMN_USER_NAME = ?", new String[]{username}); //update table
-            if (result == -1) {
-                return false;
-            } else {
-                return true;
-            }
+            cursor.close();
+            return result != -1;
         } else {
+            cursor.close();
             return false;
         }
     }
@@ -287,12 +268,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = DB.rawQuery("Select * from user_info where COLUMN_USER_NAME = ?", new String[]{username}); // find in table
         if (cursor.getCount() > 0) {
             long result = DB.update(USER_INFO, cv, "COLUMN_USER_NAME = ?", new String[]{username}); //update table
-            if (result == -1) {
-                return false;
-            } else {
-                return true;
-            }
+            cursor.close();
+            return result != -1;
         } else {
+            cursor.close();
             return false;
         }
     }
@@ -303,8 +282,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase DB = this.getReadableDatabase();
         Cursor cursor = DB.rawQuery("Select * from user_info where COLUMN_USER_NAME = ?", new String[]{username});//Find the data
         if (cursor.getCount() > 0) {
+            cursor.close();
             return true;
         } else {
+            cursor.close();
             return false;
         }
     }
@@ -331,9 +312,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PASSWORD);
                 String password = cursor.getString(index);
+                cursor.close();
                 return password;
             }
         } else {
+            cursor.close();
             return "no Password";
         }
         return "no Password";
@@ -347,9 +330,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int FTP_index = cursor.getColumnIndex("COLUMN_FTP");
                 int FTP = cursor.getInt(FTP_index);
+                cursor.close();
                 return FTP;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -363,9 +348,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PZ_1);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -379,9 +366,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PZ_2);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -395,9 +384,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PZ_3);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -412,9 +403,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PZ_4);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -428,9 +421,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PZ_5);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -444,9 +439,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PZ_6);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -460,9 +457,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PZ_7);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -478,9 +477,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_INTERVAL);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -494,9 +495,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_POWER);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -510,9 +513,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_TOTAL_CAL);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -526,9 +531,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_SPLIT_PACE);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -542,9 +549,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_SPLIT_POWER);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -558,9 +567,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_SPLIT_CAL);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -574,9 +585,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_LAST_SPLIT_TIME);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -590,9 +603,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_LAST_SPLIT_DIST);
                 int pz = cursor.getInt(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -608,9 +623,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_DIST);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -624,9 +641,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_DRIVE_LEN);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -640,9 +659,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_DRIVE_TIME);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -656,9 +677,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_STROKE_REC_TIME);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -672,9 +695,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_STROKE_DIST);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -688,9 +713,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PEAK_DRIVE_FORCE);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -704,9 +731,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PEAK_DRIVE_FORCE);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -720,9 +749,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_WORK_PER_STROKE);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
@@ -736,9 +767,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_STROKE_COUNT);
                 double pz = cursor.getDouble(index);
+                cursor.close();
                 return pz;
             }
         } else {
+            cursor.close();
             return -1;
         }
         return -1;
