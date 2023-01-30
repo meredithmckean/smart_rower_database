@@ -173,25 +173,26 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "pz: " + pz1 +' '+pz2 +' '+pz3 +' '+pz4 +' '+pz5 +' '+pz6 +' '+pz7, Toast.LENGTH_SHORT).show();
 
                 //testing dataframe33_info table go getters
-                int interval = db.getInterval(1.0);
-                int power = db.getPower(1.0);
-                int total_cal = db.getTotal_cal(1.0);
-                int split_pace = db.getSplit_pace(1.0);
-                int split_power = db.getSplit_power(1.0);
-                int split_cal = db.getSplit_cal(1.0);
-                int last_split_time = db.getLast_split_time(1.0);
-                int last_split_dist = db.getLast_split_dist(1.0);
+                //int interval = db.getInterval();
+                int interval = db.getInterval();
+                int power = db.getPower();
+                int total_cal = db.getTotal_cal();
+                int split_pace = db.getSplit_pace();
+                int split_power = db.getSplit_power();
+                int split_cal = db.getSplit_cal();
+                int last_split_time = db.getLast_split_time();
+                int last_split_dist = db.getLast_split_dist();
                 Toast.makeText(MainActivity.this, "dataframe33: " + interval +' '+ power +' '+ total_cal +' '+ split_pace +' '+ split_power +' '+ split_cal +' '+ last_split_time+' '+ last_split_dist, Toast.LENGTH_SHORT).show();
 
                 //testing dataframe35_info table go getters
-                double dist = db.getDist(10.0);
-                double drive_len = db.getDrive_len(10.0);
-                double drive_time = db.getDrive_time(10.0);
-                double stroke_dist = db.getStroke_dist(10.0);
-                double peak_drive_force = db.getPeak_drive_force(10.0);
-                double avg_drive_force = db.getAvg_drive_force(10.0);
-                double work_per_stroke = db.getWork_per_stroke(10.0);
-                double stroke_count = db.getStroke_count(10.0);
+                double dist = db.getDist();
+                double drive_len = db.getDrive_len();
+                double drive_time = db.getDrive_time();
+                double stroke_dist = db.getStroke_dist();
+                double peak_drive_force = db.getPeak_drive_force();
+                double avg_drive_force = db.getAvg_drive_force();
+                double work_per_stroke = db.getWork_per_stroke();
+                double stroke_count = db.getStroke_count();
                 Toast.makeText(MainActivity.this, "dataframe35: " + dist +' '+ drive_len +' '+ drive_time +' '+ stroke_dist +' '+ peak_drive_force +' '+ avg_drive_force +' '+ work_per_stroke +' '+ stroke_count, Toast.LENGTH_SHORT).show();
             }
         });

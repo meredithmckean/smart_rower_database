@@ -469,10 +469,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //getters for databaseHelper33
 
-    public int getInterval(double time33) //Username and password entered
+    public int getInterval() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_INTERVAL);
@@ -487,10 +487,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public int getPower(double time33) //Username and password entered
+    public int getPastInterval() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_INTERVAL);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getPower() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_POWER);
@@ -505,10 +523,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public int getTotal_cal(double time33) //Username and password entered
+    public int getPastPower() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_POWER);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getTotal_cal() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_TOTAL_CAL);
@@ -523,10 +559,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public int getSplit_pace(double time33) //Username and password entered
+    public int getPastTotal_cal() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_TOTAL_CAL);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getSplit_pace() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_SPLIT_PACE);
@@ -541,10 +595,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public int getSplit_power(double time33) //Username and password entered
+    public int getPastSplit_pace() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_SPLIT_PACE);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getSplit_power() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_SPLIT_POWER);
@@ -559,10 +631,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public int getSplit_cal(double time33) //Username and password entered
+    public int getPastSplit_power() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_SPLIT_POWER);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getSplit_cal() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_SPLIT_CAL);
@@ -577,10 +667,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public int getLast_split_time(double time33) //Username and password entered
+    public int getPastSplit_cal() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_SPLIT_CAL);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getLast_split_time() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_LAST_SPLIT_TIME);
@@ -595,10 +703,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public int getLast_split_dist(double time33) //Username and password entered
+    public int getPastLast_split_time() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe33_info where COLUMN_TIME_33 = ?", new String[]{time33 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_LAST_SPLIT_TIME);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getLast_split_dist() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_LAST_SPLIT_DIST);
+                int pz = cursor.getInt(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public int getPastLast_split_dist() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe33_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_LAST_SPLIT_DIST);
@@ -615,10 +759,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //getters for databaseHelper35
-    public double getDist(double time35) //Username and password entered
+    public double getDist() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_DIST);
@@ -633,10 +777,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getDrive_len(double time35) //Username and password entered
+    public double getPastDist() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_DIST);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getDrive_len() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_DRIVE_LEN);
@@ -651,10 +813,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getDrive_time(double time35) //Username and password entered
+    public double getPastDrive_len() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_DRIVE_LEN);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getDrive_time() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_DRIVE_TIME);
@@ -669,10 +849,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getStroke_rec_time(double time35) //Username and password entered
+    public double getPastDrive_time() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_DRIVE_TIME);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getStroke_rec_time() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_STROKE_REC_TIME);
@@ -687,10 +885,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getStroke_dist(double time35) //Username and password entered
+    public double getPastStroke_rec_time() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_STROKE_REC_TIME);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getStroke_dist() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_STROKE_DIST);
@@ -705,10 +921,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getPeak_drive_force(double time35) //Username and password entered
+    public double getPastStroke_dist() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_STROKE_DIST);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getPeak_drive_force() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PEAK_DRIVE_FORCE);
@@ -723,10 +957,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getAvg_drive_force(double time35) //Username and password entered
+    public double getPastPeak_drive_force() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_PEAK_DRIVE_FORCE);
@@ -741,10 +975,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getWork_per_stroke(double time35) //Username and password entered
+    public double getAvg_drive_force() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_PEAK_DRIVE_FORCE);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getPastAvg_drive_force() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_PEAK_DRIVE_FORCE);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getWork_per_stroke() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_WORK_PER_STROKE);
@@ -759,10 +1029,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
-    public double getStroke_count(double time35) //Username and password entered
+    public double getPastWork_per_stroke() //Username and password entered
     {
         SQLiteDatabase DB = this.getReadableDatabase();
-        Cursor cursor = DB.rawQuery("Select * from dataframe35_info where COLUMN_TIME_35 = ?", new String[]{time35 + ""});//Find the data
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_WORK_PER_STROKE);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
+
+    public double getStroke_count() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1", null);//Find the data
         if (cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 int index = cursor.getColumnIndex(COLUMN_STROKE_COUNT);
@@ -777,6 +1065,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return -1;
     }
 
+    public double getPastStroke_count() //Username and password entered
+    {
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from dataframe35_info ORDER BY COLUMN_ID DESC LIMIT 1,1", null);//Find the data
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                int index = cursor.getColumnIndex(COLUMN_STROKE_COUNT);
+                double pz = cursor.getDouble(index);
+                cursor.close();
+                return pz;
+            }
+        } else {
+            cursor.close();
+            return -1;
+        }
+        return -1;
+    }
 
 
 }
