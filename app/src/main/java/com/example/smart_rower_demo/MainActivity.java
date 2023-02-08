@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         double work_per_stroke = 18.0;
         int stroke_count = 19;
 
-
+        //testing
 
         //button listeners for the add and view all buttons
         btn_login.setOnClickListener(new View.OnClickListener() {
