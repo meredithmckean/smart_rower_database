@@ -22,8 +22,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-//testing
-//tetsing
 
 public class MainActivity extends AppCompatActivity {
 
@@ -176,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //testing dataframe33_info table go getters
                 //int interval = db.getInterval();
+                int time33 = db.getTime_33();
                 int interval = db.getInterval();
                 int power = db.getPower();
                 int total_cal = db.getTotal_cal();
@@ -184,9 +183,10 @@ public class MainActivity extends AppCompatActivity {
                 int split_cal = db.getSplit_cal();
                 int last_split_time = db.getLast_split_time();
                 int last_split_dist = db.getLast_split_dist();
-                Toast.makeText(MainActivity.this, "dataframe33: " + interval +' '+ power +' '+ total_cal +' '+ split_pace +' '+ split_power +' '+ split_cal +' '+ last_split_time+' '+ last_split_dist, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "dataframe33: " + time33 + ' ' + interval +' '+ power +' '+ total_cal +' '+ split_pace +' '+ split_power +' '+ split_cal +' '+ last_split_time+' '+ last_split_dist, Toast.LENGTH_SHORT).show();
 
                 //testing dataframe35_info table go getters
+                double time35 = db.getTime_35();
                 double dist = db.getDist();
                 double drive_len = db.getDrive_len();
                 double drive_time = db.getDrive_time();
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                 double avg_drive_force = db.getAvg_drive_force();
                 double work_per_stroke = db.getWork_per_stroke();
                 double stroke_count = db.getStroke_count();
-                Toast.makeText(MainActivity.this, "dataframe35: " + dist +' '+ drive_len +' '+ drive_time +' '+ stroke_dist +' '+ peak_drive_force +' '+ avg_drive_force +' '+ work_per_stroke +' '+ stroke_count, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "dataframe35: " + time35 + ' ' + dist +' '+ drive_len +' '+ drive_time +' '+ stroke_dist +' '+ peak_drive_force +' '+ avg_drive_force +' '+ work_per_stroke +' '+ stroke_count, Toast.LENGTH_SHORT).show();
             }
         });
 
