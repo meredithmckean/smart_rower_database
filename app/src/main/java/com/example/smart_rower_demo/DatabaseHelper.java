@@ -65,7 +65,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Constructor
     public DatabaseHelper(@Nullable Context context) {
-        super(context, "Smart_Rower_Tables.db", null, 14); //Everytime you change the
+        super(context, "Smart_Rower_Tables.db", null, 15); //Everytime you change the
     }
     //methods that must be implemented
 
@@ -96,7 +96,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("Drop Table IF EXISTS DATAFRAME33_INFO");
         db.execSQL("Drop Table IF EXISTS DATAFRAME35_INFO");
         db.execSQL("Drop Table IF EXISTS HISTORY_INFO");
-        db.execSQL("Drop Table IF EXISTS ERROR_INFO");
+        //db.execSQL("Drop Table IF EXISTS ERROR_INFO");
         onCreate(db);
     }
 
@@ -300,11 +300,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor get_error(String username) {  //display history table user specific
+/*    public Cursor get_error(String username) {  //display history table user specific
         SQLiteDatabase DB = this.getReadableDatabase();
         Cursor cursor = DB.rawQuery("Select * from error_info where COLUMN_USER = ?", new String[]{username});//Find the data
         return cursor;
-    }
+    }*/
 
     //Go getters for User
 
