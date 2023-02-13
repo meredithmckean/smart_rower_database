@@ -57,14 +57,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TIMESTAMP = "COLUMN_TIMESTAMP";
     public static final String COLUMN_WORKOUT = "COLUMN_WORKOUT";
 
-    public static final String ERROR_INFO = "error_info";
+    //public static final String ERROR_INFO = "error_info";
     public static final String COLUMN_ERROR = "COLUMN_ERROR";
+    public static final String COLUMN_AVGPOWER = "COLUMN_AVGPOWER";
 
 
 
     //Constructor
     public DatabaseHelper(@Nullable Context context) {
-        super(context, "Smart_Rower_Tables.db", null, 11); //Everytime you change the
+        super(context, "Smart_Rower_Tables.db", null, 14); //Everytime you change the
     }
     //methods that must be implemented
 
@@ -77,15 +78,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String dataframe35_table = "Create TABLE " + DATAFRAME35_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TIME_35 + " DOUB, " + COLUMN_DIST + " DOUB, " + COLUMN_DRIVE_LEN + " DOUB, " + COLUMN_DRIVE_TIME + " DOUB, " + COLUMN_STROKE_REC_TIME + " DOUB, " + COLUMN_STROKE_DIST + " DOUB, " + COLUMN_PEAK_DRIVE_FORCE + " DOUB, " + COLUMN_AVG_DRIVE_FORCE + " DOUB, " + COLUMN_WORK_PER_STROKE + " DOUB, " + COLUMN_STROKE_COUNT + " INT)";
 
-        String history_table = "Create TABLE " + HISTORY_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_WORKOUT + " TEXT)";
+        String history_table = "Create TABLE " + HISTORY_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_WORKOUT + " TEXT, " + COLUMN_ERROR + " INT, " + COLUMN_AVGPOWER + " DOUB)";
 
-        String error_table = "Create TABLE " + ERROR_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_ERROR + " INT)";
+        //String error_table = "Create TABLE " + ERROR_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_ERROR + " INT)";
 
         db.execSQL(user_table);
         db.execSQL(dataframe33_table);
         db.execSQL(dataframe35_table);
         db.execSQL(history_table);
-        db.execSQL(error_table);
+        //db.execSQL(error_table);
     }
 
     //this is called if the database version number changes. It prevents users apps from breaking when you change the database design.
@@ -166,18 +167,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return insert != -1;
     }
 
-    public boolean add_history(String User, String workout) {
+    public boolean add_history(String User, String workout, int error, double avg_power) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_USER, User);
         cv.put(COLUMN_WORKOUT, workout);
+        cv.put(COLUMN_ERROR, error);
+        cv.put(COLUMN_AVGPOWER, avg_power);
 
         //ID is a auto increment in the database
         long insert = db.insert(HISTORY_INFO, null, cv);
         return insert != -1;
     }
 
-    public boolean add_error(String User, int error) {
+/*    public boolean add_error(String User, int error) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_USER, User);
@@ -186,7 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //ID is a auto increment in the database
         long insert = db.insert(ERROR_INFO, null, cv);
         return insert != -1;
-    }
+    }*/
 
 
     //delete methods
@@ -210,9 +213,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             //delete account from all tables
             long result1 = DB.delete(USER_INFO, "COLUMN_USER_NAME=?", new String[]{username});
             long result2 = DB.delete(HISTORY_INFO, "COLUMN_USER=?", new String[]{username});
-            long result3 = DB.delete(ERROR_INFO, "COLUMN_USER=?", new String[]{username});
+            //long result3 = DB.delete(ERROR_INFO, "COLUMN_USER=?", new String[]{username});  //Deleted Error Table
             cursor1.close();
-            if (result1 == -1 || result2 == -1 || result3 == -1 ) {
+            //if (result1 == -1 || result2 == -1 || result3 == -1 ) { //deleted Error Table
+            if (result1 == -1 || result2 == -1) {                     //deleted Error Table
                 return false;
             } else {
                 return true;

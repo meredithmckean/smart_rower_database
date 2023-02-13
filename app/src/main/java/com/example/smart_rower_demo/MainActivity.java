@@ -81,6 +81,10 @@ public class MainActivity extends AppCompatActivity {
         double work_per_stroke = 18.0;
         int stroke_count = 19;
 
+        String workout_num = "workout1";
+        int error = 1;
+        double avg_power = 2.3;
+
         //testing
 
         //button listeners for the add and view all buttons
@@ -295,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                 String passwordTXT = et_password.getText().toString();
 
                 //Testing adding to history table
-                boolean success1 = db.add_history(usernameTXT,"workout1");
+                boolean success1 = db.add_history(usernameTXT,workout_num,error,avg_power);
                 if (success1 == true){
                     Toast.makeText(MainActivity.this, "workout added to history table", Toast.LENGTH_SHORT).show();
                 }
@@ -304,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-                //Testing adding to error table
+/*                //Testing adding to error table
                 int error = 5;
                 boolean success2 = db.add_error(usernameTXT,error);
                 if (success2 == true){
@@ -312,7 +316,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     Toast.makeText(MainActivity.this, "error not added to history table", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -334,17 +338,17 @@ public class MainActivity extends AppCompatActivity {
                 while(res.moveToNext()) {
                     //buffer.append("timestamp :"+res.getString(2)+"\n");
                     //buffer.append("Workout :"+res.getString(3)+"\n");
-                    buffer.append(res.getString(2)+ "    "+"Workout :"+res.getString(3)+"\n");
+                    buffer.append(res.getString(2)+ "    "+"Workout :"+res.getString(3)+ "    "+"Error :"+res.getString(4)+"\n");
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setCancelable(true);
-                builder.setTitle(usernameTXT+" Workouts");
+                builder.setTitle(usernameTXT+" History");
                 builder.setMessage(buffer.toString());
                 builder.show();
                 res.close();
 
 
-                //display history table user specific
+/*                //display error table user specific
                 Cursor res2 = db.get_error(usernameTXT);
                 if(res2.getCount() == 0) {
                     Toast.makeText(MainActivity.this,"No Error Exists", Toast.LENGTH_SHORT).show();
@@ -360,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
                 builder2.setTitle(usernameTXT+" Errors");
                 builder2.setMessage(buffer2.toString());
                 builder2.show();
-                res2.close();
+                res2.close();*/
             }
         });
 
