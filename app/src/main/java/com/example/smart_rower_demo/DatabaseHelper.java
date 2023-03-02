@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+
 //import java.text.SimpleDateFormat;
 //import java.util.Date;
 
@@ -299,6 +301,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = DB.rawQuery("Select * from history_info where COLUMN_USER = ?", new String[]{username});//Find the data
         return cursor;
     }
+
+    public ArrayList getAllPower(String username, String workout_type){
+        SQLiteDatabase DB = this.getReadableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from history_info where COLUMN_USER = ? AND + COLUMN_WORKOUT = ?", new String[]{username, workout_type});
+        //Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + User.TABLE_NAME + " WHERE "+ User.COL_NAME + " = ? AND " + User.COL_PASS +" = ?", new String[]{UserName , PassWord});
+        ArrayList<String> allPower = new ArrayList<String>();
+        while(cursor.moveToNext()) {
+            allPower.add(cursor.getString(5));
+        }
+        cursor.close();
+        return allPower;
+    }
+
+
 
 /*    public Cursor get_error(String username) {  //display history table user specific
         SQLiteDatabase DB = this.getReadableDatabase();

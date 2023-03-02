@@ -1,6 +1,7 @@
 package com.example.smart_rower_demo;
 
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import android.view.View;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
+//import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.view.Menu;
@@ -23,12 +24,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     // references of buttons and other controls on the layout
     EditText et_username, et_password;
-    Button btn_login, btn_create_account, btn_delete_account, btn_user_info, btn_class_testing, btn_update_password, btn_update_FTP, btn_delete_tables, btn_history_error_tables, btn_view_history_error_tables;
+    Button btn_login, btn_create_account, btn_delete_account, btn_user_info, btn_class_testing, btn_update_password, btn_update_FTP, btn_delete_tables, btn_history_error_tables, btn_view_history_error_tables, btn_prediction;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) { //starts the application
         super.onCreate(savedInstanceState);
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         btn_delete_tables = findViewById(R.id.btnDeleteTables);
         btn_history_error_tables = findViewById(R.id.btnHistoryErrorTables);
         btn_view_history_error_tables = findViewById(R.id.btnViewHistoryErrorTables);
+        btn_prediction = findViewById(R.id.btnPredictions);
 
 
         //Test Data
@@ -307,6 +312,35 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "workout not added to history table", Toast.LENGTH_SHORT).show();
                 }
 
+                //Adding multiple workouts at once
+
+                //Testing adding to history table
+                boolean success2 = db.add_history(usernameTXT,"workout_1",error,avg_power);
+                if (success2 == true){
+                    Toast.makeText(MainActivity.this, "workout added to history table", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "workout not added to history table", Toast.LENGTH_SHORT).show();
+                }
+
+                //Testing adding to history table
+                boolean success3 = db.add_history(usernameTXT,"workout_2",error,avg_power);
+                if (success3 == true){
+                    Toast.makeText(MainActivity.this, "workout added to history table", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "workout not added to history table", Toast.LENGTH_SHORT).show();
+                }
+
+                //Testing adding to history table
+                boolean success4 = db.add_history(usernameTXT,"workout_1",error,avg_power);
+                if (success4 == true){
+                    Toast.makeText(MainActivity.this, "workout added to history table", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "workout not added to history table", Toast.LENGTH_SHORT).show();
+                }
+
 
 /*                //Testing adding to error table
                 int error = 5;
@@ -365,6 +399,29 @@ public class MainActivity extends AppCompatActivity {
                 builder2.setMessage(buffer2.toString());
                 builder2.show();
                 res2.close();*/
+            }
+        });
+
+        btn_prediction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatabaseHelper db = new DatabaseHelper(MainActivity.this); //making reference to database
+                String usernameTXT = et_username.getText().toString();
+                String workout_type = "workout_1";
+
+                ArrayList<String> allPower = db.getAllPower(usernameTXT,workout_type);
+                //Toast.makeText(MainActivity.this, allPower, Toast.LENGTH_SHORT).show();
+
+                StringBuffer buffer = new StringBuffer();
+                for (int i = 0; i < allPower.size(); i++) {
+                    buffer.append(allPower.get(i)+' ');
+                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setCancelable(true);
+                builder.setTitle(usernameTXT+"Past Power");
+                builder.setMessage(buffer.toString());
+                builder.show();
             }
         });
 
