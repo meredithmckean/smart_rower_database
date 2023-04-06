@@ -63,11 +63,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ERROR = "COLUMN_ERROR";
     public static final String COLUMN_AVGPOWER = "COLUMN_AVGPOWER";
 
+    public static final String INFO3D = "info3D";
+    public static final String COLUMN_MESSAGE = "COLUMN_MESSAGE";
+    public static final String COLUMN_FORCEVALS1 = "COLUMN_FORCEVALS1";
+    public static final String COLUMN_FORCEVALS2 = "COLUMN_FORCEVALS2";
+    public static final String COLUMN_FORCEVALS3 = "COLUMN_FORCEVALS3";
+    public static final String COLUMN_FORCEVALS4 = "COLUMN_FORCEVALS4";
+    public static final String COLUMN_FORCEVALS5 = "COLUMN_FORCEVALS5";
+    public static final String COLUMN_FORCEVALS6 = "COLUMN_FORCEVALS6";
+    public static final String COLUMN_FORCEVALS7 = "COLUMN_FORCEVALS7";
+    public static final String COLUMN_FORCEVALS8 = "COLUMN_FORCEVALS8";
+    public static final String COLUMN_FORCEVALS9 = "COLUMN_FORCEVALS9";
+    public static final String COLUMN_FORCEVALS10 = "COLUMN_FORCEVALS10";
+
+
+
+
+    //val 3D_table =
+    //        "Create TABLE $3D_INFO ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, $COLUMN_SEQUENCENUMBER INT, $COLUMN_1_FORCEVALS TEXT, $COLUMN_2_FORCEVALS TEXT, $COLUMN_3_FORCEVALS TEXT, $COLUMN_4_FORCEVALS TEXT, $COLUMN_5_FORCEVALS TEXT, $COLUMN_6_FORCEVALS TEXT, $COLUMN_7_FORCEVALS TEXT, $COLUMN_8_FORCEVALS TEXT, $COLUMN_9_FORCEVALS TEXT, $COLUMN_10_FORCEVALS TEXT)"
+
+
 
 
     //Constructor
     public DatabaseHelper(@Nullable Context context) {
-        super(context, "Smart_Rower_Tables.db", null, 15); //Everytime you change the
+        super(context, "Smart_Rower_Tables.db", null, 18); //Everytime you change the
     }
     //methods that must be implemented
 
@@ -82,12 +102,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String history_table = "Create TABLE " + HISTORY_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_WORKOUT + " TEXT, " + COLUMN_ERROR + " INT, " + COLUMN_AVGPOWER + " DOUB)";
 
-        //String error_table = "Create TABLE " + ERROR_INFO + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_USER + " TEXT, " + COLUMN_TIMESTAMP + " TEXT default (datetime('now','localtime')), " + COLUMN_ERROR + " INT)";
+        ArrayList<Integer> emptyList = new ArrayList<>();
+        String table3D = "Create TABLE " + INFO3D + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_MESSAGE + " INT, " + COLUMN_FORCEVALS1 + " TEXT, " + COLUMN_FORCEVALS2 + " TEXT, " +COLUMN_FORCEVALS3 + " TEXT, " +COLUMN_FORCEVALS4 + " TEXT, " +COLUMN_FORCEVALS5 + " TEXT, " +COLUMN_FORCEVALS6 + " TEXT, " +COLUMN_FORCEVALS7 + " TEXT, " +COLUMN_FORCEVALS8 + " TEXT, " +COLUMN_FORCEVALS9 + " TEXT, " +COLUMN_FORCEVALS10 + " TEXT)";
+
+
 
         db.execSQL(user_table);
         db.execSQL(dataframe33_table);
         db.execSQL(dataframe35_table);
         db.execSQL(history_table);
+        db.execSQL(table3D);
         //db.execSQL(error_table);
     }
 
@@ -98,6 +122,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("Drop Table IF EXISTS DATAFRAME33_INFO");
         db.execSQL("Drop Table IF EXISTS DATAFRAME35_INFO");
         db.execSQL("Drop Table IF EXISTS HISTORY_INFO");
+        db.execSQL("Drop Table IF EXISTS INFO3D");
         //db.execSQL("Drop Table IF EXISTS ERROR_INFO");
         onCreate(db);
     }
@@ -106,6 +131,52 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //Methods!!!
 
     //add to tables
+    public boolean add_3Dmessage(int message, String forceVals) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        //If username exists return false
+        Cursor cursor = db.rawQuery("Select * from info3D where COLUMN_MESSAGE = ?", new String[]{String.valueOf(message)});  //Find sequenceNumber in info3D
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            ContentValues cv = new ContentValues();
+            int columnIndex = -1;
+            // loop through the columns in the row and find the next null column
+            for (int i = 2; i <= cursor.getColumnCount(); i++) {
+                if (i >= 12) {
+                    break;
+                }
+                if (cursor.getString(i) == null) {
+                    columnIndex = i;
+                    break;
+                }
+            }
+
+            if (columnIndex != -1) {
+                // update the null column with new force values
+                cv.put(cursor.getColumnName(columnIndex), forceVals);
+                long result = db.update(INFO3D, cv, "COLUMN_MESSAGE = ?", new String[]{String.valueOf(message)});
+                cursor.close();
+                return result != -1;
+            } else {
+                // no null column found, cannot update the row
+                cursor.close();
+                return false;
+            }
+
+        } else {
+            ContentValues cv = new ContentValues();
+            cv.put(COLUMN_MESSAGE, message);
+            cv.put(COLUMN_FORCEVALS1, forceVals);
+
+            //ID is a auto increment in the database
+            long insert = db.insert(INFO3D, null, cv);
+            cursor.close();
+            return insert != -1;
+        }
+
+    }
+
+
+
     public boolean add_account(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
         //If username exists return false
@@ -241,6 +312,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
+    public Boolean delete_table3D() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from " + INFO3D);
+        return true;
+    }
+
     //updating methods
 
     public Boolean updateuserFTP(String username, int FTP, int pz_1, int pz_2, int pz_3, int pz_4, int pz_5, int pz_6, int pz_7) {
@@ -314,6 +391,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return allPower;
     }
 
+    public ArrayList get3D_avg_y(){
+        SQLiteDatabase DB = this.getReadableDatabase();
+        ArrayList<String> avg_y = new ArrayList<String>();
+        return avg_y;
+    }
 
 
 /*    public Cursor get_error(String username) {  //display history table user specific

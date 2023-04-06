@@ -292,6 +292,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "dataframe33 table Deleted", Toast.LENGTH_SHORT).show();
                 boolean success2 = db.delete_dataframe35_table();
                 Toast.makeText(MainActivity.this, "dataframe35 table Deleted", Toast.LENGTH_SHORT).show();
+                boolean success3 = db.delete_table3D();
+                Toast.makeText(MainActivity.this, "table3D table Deleted", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -422,6 +424,22 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle(usernameTXT+"Past Power");
                 builder.setMessage(buffer.toString());
                 builder.show();
+
+
+
+                //Adding to 3D table
+                int pol = 4;
+                String message = "123456";
+
+                boolean success = db.add_3Dmessage(pol, message);
+                if (success == true){
+                    Toast.makeText(MainActivity.this, "message added to 3D table", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "message not added to 3D table", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 
